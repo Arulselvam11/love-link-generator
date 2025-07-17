@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Create Your Love Link - Love Link Generator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="love-card">
+            <div class="text-center mb-4">
+                <i class="fas fa-heart love-icon"></i>
+                <h1 class="love-title">Create Your Love Link</h1>
+                <p class="love-subtitle">Send your feelings in a special way</p>
+            </div>
+            
+            <form method="POST" action="{{ url_for('generate_link') }}" class="love-form">
+                <div class="mb-3">
+                    <label for="user_name" class="form-label">
+                        <i class="fas fa-user"></i> Your Name
+                    </label>
+                    <input type="text" class="form-control love-input" id="user_name" name="user_name" 
+                           placeholder="Enter your beautiful name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="crush_name" class="form-label">
+                        <i class="fas fa-heart"></i> Your Crush's Name
+                    </label>
+                    <input type="text" class="form-control love-input" id="crush_name" name="crush_name" 
+                           placeholder="Enter your crush's name" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="phone_number" class="form-label">
+                        <i class="fas fa-phone"></i> Your Phone Number (Optional)
+                    </label>
+                    <input type="tel" class="form-control love-input" id="phone_number" name="phone_number" 
+                           placeholder="So they can reach you back">
+                </div>
+                
+                <button type="submit" class="btn love-btn w-100">
+                    <i class="fas fa-magic"></i> Generate Love Link
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    <i class="fas fa-lock"></i> Your information is safe and secure
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

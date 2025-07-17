@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Your Love Link is Ready! - Love Link Generator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="love-card text-center">
+            {% if checking %}
+                <i class="fas fa-search-heart love-icon"></i>
+                <h1 class="love-title">Response Status</h1>
+                <p class="love-subtitle">Check if {{ link_data.crush_name }} has responded</p>
+                
+                <div class="response-status" id="responseStatus">
+                    {% if link_data.response %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Great News!</strong> {{ link_data.crush_name }} has responded!
+                        </div>
+                        
+                        <div class="response-display">
+                            <h5>Their Response:</h5>
+                            <div class="response-badge response-{{ link_data.response }}">
+                                {% if link_data.response == 'yes' %}
+                                    <i class="fas fa-heart"></i> Yes, they feel the same!
+                                {% elif link_data.response == 'no' %}
+                                    <i class="fas fa-heart-broken"></i> They'd like to stay friends
+                                {% else %}
+                                    <i class="fas fa-question"></i> Maybe - they want to talk!
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">
+                                Responded on {{ link_data.responded_at.strftime('%B %d, %Y at %I:%M %p') }}
+                            </small>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-hourglass-half"></i>
+                            <strong>Waiting...</strong> {{ link_data.crush_name }} hasn't responded yet.
+                        </div>
+                        
+                        <div class="waiting-animation">
+                            <div class="heart-pulse">♥</div>
+                            <p>Don't worry, good things take time!</p>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-4">
+                    <button class="btn love-btn" onclick="location.reload()">
+                        <i class="fas fa-sync-alt"></i> Refresh Status
+                    </button>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary ms-2">
+                        <i class="fas fa-plus"></i> Create New Link
+                    </a>
+                </div>
+            {% else %}
+                <i class="fas fa-magic love-icon"></i>
+                <h1 class="love-title">Your Love Link is Ready!</h1>
+                <p class="love-subtitle">Send this special link to {{ crush_name }}</p>
+                
+                <div class="link-container">
+                    <div class="generated-link">
+                        <input type="text" class="form-control" id="loveLink" value="{{ love_url }}" readonly>
+                        <button class="btn btn-outline-primary" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="share-buttons">
+                    <h5>Share Your Love Link:</h5>
+                    <div class="btn-group-vertical w-100">
+                        <a href="https://wa.me/?text={{ love_url | urlencode }}" 
+                           class="btn btn-success" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Share on WhatsApp
+                        </a>
+                        <a href="sms:?body={{ love_url | urlencode }}" 
+                           class="btn btn-primary">
+                            <i class="fas fa-sms"></i> Send via SMS
+                        </a>
+                        <a href="mailto:?subject=Someone special has a message for you&body={{ love_url | urlencode }}" 
+                           class="btn btn-info">
+                            <i class="fas fa-envelope"></i> Send via Email
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('check_response', link_id=link_id) }}" class="btn love-btn">
+                        <i class="fas fa-search"></i> Check Response Later
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard() {
+    const linkInput = document.getElementById('loveLink');
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    
+    // Show feedback
+    event.target.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(() => {
+        event.target.innerHTML = '<i class="fas fa-copy"></i> Copy';
+    }, 2000);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ link_data.user_name }} has something to tell you - Love Link{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        {% if already_responded %}
+            <div class="love-card text-center">
+                <i class="fas fa-check-circle response-icon text-success"></i>
+                <h1 class="love-title">Thank You!</h1>
+                
+                {% if just_responded %}
+                    <p class="love-subtitle">Your response has been sent to {{ link_data.user_name }}!</p>
+                {% else %}
+                    <p class="love-subtitle">You already responded to this love message.</p>
+                {% endif %}
+                
+                <div class="response-display">
+                    <h5>Your Response:</h5>
+                    <div class="response-badge response-{{ link_data.response }}">
+                        {% if link_data.response == 'yes' %}
+                            <i class="fas fa-heart"></i> Yes, I feel the same!
+                        {% elif link_data.response == 'no' %}
+                            <i class="fas fa-heart-broken"></i> Sorry, just friends
+                        {% else %}
+                            <i class="fas fa-question"></i> Maybe, let's talk
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('index') }}" class="btn love-btn">
+                        <i class="fas fa-heart"></i> Create Your Own Love Link
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="love-card text-center">
+                <i class="fas fa-envelope-heart love-icon"></i>
+                <h1 class="love-title">{{ link_data.crush_name }},</h1>
+                <h2 class="love-message">{{ link_data.user_name }} has something special to tell you...</h2>
+                
+                <div class="love-poem">
+                    <p class="poem-line">In this world of endless faces,</p>
+                    <p class="poem-line">You're the one who fills my spaces.</p>
+                    <p class="poem-line">Every moment, every day,</p>
+                    <p class="poem-line">You take my breath away.</p>
+                    <br>
+                    <p class="poem-line"><strong>{{ link_data.user_name }} likes you!</strong></p>
+                    <p class="poem-line">Will you give love a chance?</p>
+                </div>
+                
+                <div class="response-buttons">
+                    <form method="POST" action="{{ url_for('respond_to_love', link_id=link_id) }}">
+                        <input type="hidden" name="response" value="yes">
+                        <button type="submit" class="btn btn-success btn-lg" style="width: 100%; margin-bottom: 1rem; padding: 15px;">
+                            ❤️ Yes, I feel the same!
+                        </button>
+                    </form>
+                    
+                    <form method="POST" action="{{ url_for('respond_to_love', link_id=link_id) }}">
+                        <input type="hidden" name="response" value="maybe">
+                        <button type="submit" class="btn btn-warning btn-lg" style="width: 100%; margin-bottom: 1rem; padding: 15px;">
+                            🤔 Maybe, let's talk about it
+                        </button>
+                    </form>
+                    
+                    <form method="POST" action="{{ url_for('respond_to_love', link_id=link_id) }}">
+                        <input type="hidden" name="response" value="no">
+                        <button type="submit" class="btn btn-secondary btn-lg" style="width: 100%; padding: 15px;">
+                            🤝 Just friends
+                        </button>
+                    </form>
+                </div>
+                
+                {% if link_data.phone_number %}
+                    <div class="contact-info">
+                        <small class="text-muted">
+                            <i class="fas fa-phone"></i> 
+                            You can reach {{ link_data.user_name }} at: 
+                            <a href="tel:{{ link_data.phone_number }}">{{ link_data.phone_number }}</a>
+                        </small>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
