@@ -31,7 +31,7 @@ Create fun and customizable love links to surprise your loved ones — share a m
 - **HTML5 / CSS3**
 - **JavaScript (Vanilla)**
 - **Python + Flask**
-- **Hosted on Render (Free Tier)**
+- **Hosted on Render**
 
 ---
 
